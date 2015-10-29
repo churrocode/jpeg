@@ -16,8 +16,11 @@ levantarBW.o: EasyBMP_1.06/levantarBW.cpp
 test: writers.o test.o levantarBW.o
 	g++ $(CFLAGS) -lstdc++ -o $@ $< test.o levantarBW.o EasyBMP.o 
 
-bBtest: bitBuffer.o testBBff.c
-	gcc $(CFLAGS) -o bBTest testBBff.c bitBuffer.o
+bBtest: bitBuffer.o bitsUtils.o testBBff.c
+	gcc $(CFLAGS) -o bBTest testBBff.c bitBuffer.o bitsUtils.o
+
+wrtTest: writers.o testWriters.c
+	gcc $(CFLAGS) -o wrtTest testWriters.c writers.o
 
 %.o: %.c
 	gcc $(CFLAGS) -c -o $@ $<

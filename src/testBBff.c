@@ -1,4 +1,5 @@
 #include "bitBuffer.h"
+#include "bitsUtils.h"
 #include "stdio.h"
 
 void testFullBytes();

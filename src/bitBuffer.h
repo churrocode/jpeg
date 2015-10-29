@@ -22,6 +22,6 @@ void bB_free(bitBuffer* bb);
 void bB_write(unsigned char* start, int writeSize, bitBuffer* buffer);
 
 void printBuffer(const bitBuffer* b);
-unsigned char printBitsInByte(unsigned char byte);
+
 
 #endif
