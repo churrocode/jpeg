@@ -3,5 +3,7 @@
 
 typedef double double8x8[8][8];
 typedef char quant_matrix[8][8];
+typedef unsigned char byte;
+typedef unsigned short dByte;
 
 #endif

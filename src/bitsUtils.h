@@ -1,7 +1,10 @@
 #ifndef JPEG_BITSUT
 #define JPEG_BITSUT
 
-unsigned char printBitsInByte(unsigned char byte);
-unsigned short printBitsInDByte(unsigned short db);
+#include "typedefs.h"
+
+byte printBitsInByte(byte b);
+dByte printBitsInDByte(dByte db);
+dByte write_with_length(unsigned int n, int length);
 
 #endif

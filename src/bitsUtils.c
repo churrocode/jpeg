@@ -1,8 +1,8 @@
 #include "bitsUtils.h"
 #include <stdio.h>
+#include "typedefs.h"
 
-
-unsigned char printBitsInByte(unsigned char byte) {
+byte printBitsInByte(byte byte) {
 	//unsigned unsigned char masks[8] = {128,64,32,16,8,4,2,1};
 	for (int i = 7; i >= 0; --i) {
 		//unsigned char uno = 1;
@@ -13,7 +13,7 @@ unsigned char printBitsInByte(unsigned char byte) {
 	return byte;
 }
 
-unsigned short printBitsInDByte(unsigned short db) {
+dByte printBitsInDByte(dByte db) {
 	printBitsInByte(*((unsigned char*) &db));
 	printf("\t");
 	printBitsInByte(*(((unsigned char*) &db)+1));
