@@ -22,6 +22,9 @@ bBtest: bitBuffer.o bitsUtils.o testBBff.c
 wrtTest: writers.o testWriters.c
 	gcc $(CFLAGS) -o wrtTest testWriters.c writers.o
 
+endTest: bitsUtils.o testEndianness.c
+	gcc $(CFLAGS) -o endTest testEndianness.c bitsUtils.o
+
 %.o: %.c
 	gcc $(CFLAGS) -c -o $@ $<
 
