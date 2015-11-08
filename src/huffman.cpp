@@ -5,7 +5,7 @@
 // Y_DC_LENGTHS[i-1] = # codigos de long i (BITS en el apunte) (para el DC de Y)
 const byte Y_DC_LENGTHS[16] = {0,1,5,1,1,1,1,1,1,0,0,0,0,0,0,0};
 
-// Y_DC_HUFFVALS[i-1] -> los valores ordenados segun la longitud del codigo que les toco (para el DC de Y)
+// Y_DC_HUFFVALS -> los valores ordenados segun la longitud del codigo que les toco (para el DC de Y)
 #define Y_DC_HUFFVALS_SIZE 12;
 const byte Y_DC_HUFFVALS[Y_DC_HUFFVALS_SIZE] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 
@@ -32,5 +32,45 @@ const byte Y_AC_HUFFVALS[Y_AC_HUFFVALS_SIZE] =  {
 									202,210,211,212,213,214,215,216,217,218,
 									225,226,227,228,229,230,231,232,233,234,
 									241,242,243,244,245,246,247,248,249,250};
-/*const*/ dByte Y_AC_HUFFCODE[Y_DC_HUFFVALS_SIZE];
-/*const*/ byte Y_AC_HUFFLENGTH[Y_DC_HUFFVALS_SIZE];
+/*const*/ dByte Y_AC_HUFFCODE[256];
+/*const*/ byte Y_AC_HUFFLENGTH[256];
+
+
+//¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡
+//¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡HAY QUE TESTEAR ESTO!!!!!!!!!!!!!!!!!!!!!
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+// A partir de _LENGTHS y HUFFVALS construye _HUFFCODE y _HUFFLENGTH
+// _HUFFCODE[v] = código que le tocó al valor v.
+// _HUFFLENGTH[v] = longitud del código que le tocó al valor v.
+void build_huff_code_table ( const byte* lengths, const byte lengths_size, const byte* huffvals,
+							dByte* huffocde, byte* hufflength ) {
+	int cnt  = 0;
+	dByte baseForLength, lastCode = 0;
+	int lastLength = 0;
+	for (int i = 0;  i < lengths_size; ++i) {
+		byte currentLength = lengths[i];
+		if (currentLength > 0) {
+			baseForLength = lastCode << (currentLength - lastLength);
+			for (int l = 0; l < currentLength; ++l) {
+				byte val = huffvals[cnt];
+				cnt++;
+				hufflength[val] = currentLength;
+				lastCode = baseForLength + l;
+				huffvals[val] = lastCode;
+			}
+			lastLength = currentLength;
+		}
+	}
+}
+
+
+void initialize_tables_bw(){
+	if (!initialized) {
+		build_huff_code_table(Y_AC_LENGTHS, 16, Y_AC_HUFFVALS, Y_AC_HUFFCODE, Y_AC_HUFFLENGTH);
+		build_huff_code_table(Y_DC_LENGTHS, 16, Y_DC_HUFFVALS, Y_DC_HUFFCODE, Y_DC_HUFFLENGTH);
+		initialized = 1;
+	}
+}

@@ -16,5 +16,7 @@ const unsigned char Y_AC_LENGTHS[16];
 const unsigned char Y_AC_HUFFVALS_SIZE;
 const unsigned char Y_AC_HUFFVALS[160];
 
+void initialize_tables_bw();
+int initialized = 0;
 
 #endif
