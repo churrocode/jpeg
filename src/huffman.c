@@ -15,8 +15,9 @@ int huffman_initialized = 0;
 void build_huff_code_table ( const byte* lengths, const byte lengths_size, const byte* huffvals,
 							dByte* huffcode, byte* hufflength ) {
 	int cnt  = 0;
-	dByte baseForLength, lastCode = 0;
-	int lastLength = 0;
+	dByte baseForLength;
+	int lastCode = -1;
+	int lastLength = 1;
 	int i, l;
 	for (i = 0;  i < lengths_size; ++i) {
 		byte cuantosByLength = lengths[i];
@@ -28,7 +29,7 @@ void build_huff_code_table ( const byte* lengths, const byte lengths_size, const
 				cnt++;
 				hufflength[val] = currentLength;
 				lastCode = baseForLength + l;
-				huffcode[val] = lastCode;
+				huffcode[val] = (dByte) lastCode;
 			}
 			lastLength = currentLength;
 		}
