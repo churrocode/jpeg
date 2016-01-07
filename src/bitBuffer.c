@@ -1,6 +1,7 @@
 #include "bitBuffer.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include "bitsUtils.h"
 
 
 // typedef struct {
@@ -76,6 +77,13 @@ void bB_write(unsigned char* start, int writeSize, bitBuffer* buffer) {
 		remainingBits = 0;
 	}
 } 
+
+void bB_write_short(unsigned short num, int numLength, bitBuffer* buffer) {
+	//bitsCorridos es  un short con los bits de num puestos "al principio" (o sea, a partir de la posicion de mem menos sign.)
+	// TODO: Reescribir para short para evitar el casteo innecesario.
+	dByte bitsCorridos = write_with_length((unsigned int) num, numLength);
+	bB_write((unsigned char*) &bitsCorridos, numLength, buffer);
+}
 
 void printBuffer(const bitBuffer* b) {
 	for (int i = 0; i < b-> size; ++i) {

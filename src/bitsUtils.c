@@ -35,3 +35,17 @@ dByte write_with_length(unsigned int n, int length) {
 		return h|l;
 	}
 }
+
+// El test esta en testHuffman.c
+int length(dByte num) {
+	int len = 16;
+	dByte mask;
+	for (mask = 0x8000; mask != 0; mask >>= 1) {
+		if ((num & mask) != 0) {
+			break;
+		} else {
+			len--;
+		}
+	}
+	return len;
+}

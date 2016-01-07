@@ -6,5 +6,6 @@
 byte printBitsInByte(byte b);
 dByte printBitsInDByte(dByte db);
 dByte write_with_length(unsigned int n, int length);
+int length(dByte num);
 
 #endif

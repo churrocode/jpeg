@@ -9,7 +9,7 @@ void testFullBytesTaken3();
 void testManyBytesTaken3();
 void testFullBytesTaken5();
 void testDeath();
-
+void testWriteShort();
 
 int main() {
 	// testFullBytes();
@@ -18,7 +18,8 @@ int main() {
 	// testManyBytesTaken3();
 	// testFullBytesTaken5();
 	// testBitsAlternados();
-	testDeath();
+	// testDeath();
+	testWriteShort();
 	return 0;
 }
 
@@ -150,4 +151,52 @@ void testDeath() {
 
 	printBuffer(&b);
 	bB_free(&b);
+}
+
+void testWriteShort() {
+	bitBuffer b;
+
+	// Escribimos cosas que empiezan con 1
+	b = bB_new(5);
+	// 101(0.000)
+	bB_write_short((unsigned short) 5, 3, &b);
+	printBuffer(&b);
+
+	// 1011.01(00)
+	bB_write_short((unsigned short) 5, 3, &b);
+	printBuffer(&b);
+
+	// 1011.0111 001(0.000)
+	bB_write_short((unsigned short) 25, 5, &b);
+	printBuffer(&b);
+
+	// 1011.0111 0011.0000 0000.0000 001(0.0000)
+	bB_write_short((unsigned short) 0x8001, 16, &b);
+	printBuffer(&b);
+
+	// 1011.0111 0011.0000 0000.0000 0011.1111 1111.111(0)
+	//                             0000.1111 1111.1111
+	bB_write_short((unsigned short) 0x0FFF, 12, &b);
+	printBuffer(&b);
+
+	bB_free(&b);
+
+	// Escribimos cosas que empiezan con 0
+	b = bB_new(5);
+
+	// 0001.11(00)
+	bB_write_short((unsigned short) 7, 6, &b);
+	printBuffer(&b);
+
+	// 0001.1100 0111.1(000)
+	bB_write_short((unsigned short) 15, 7, &b);
+	printBuffer(&b);
+
+	// 0001.1100 0111.1000 0000.0000 0000.1(000)
+	bB_write_short((unsigned short) 1, 16, &b);
+	printBuffer(&b);
+
+	// 0001.1100 0111.1000 0000.0000 0000.1000 1000.0001
+	bB_write_short((unsigned short) 0x81, 11, &b);
+	printBuffer(&b);
 }

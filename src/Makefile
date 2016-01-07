@@ -25,8 +25,11 @@ wrtTest: writers.o testWriters.c
 endTest: bitsUtils.o testEndianness.c
 	gcc $(CFLAGS) -o endTest testEndianness.c bitsUtils.o
 
-huffTest: huffman.o testHuffman.c
-	gcc $(CFLAGS) -o huffTest testHuffman.c huffman.o
+huffTest: huffman.o testHuffman.c bitBuffer.o bitsUtils.o
+	gcc $(CFLAGS) -o huffTest testHuffman.c huffman.o bitBuffer.o bitsUtils.o
+
+bitBuffer.o: bitBuffer.c bitsUtils.o
+	gcc $(CFLAGS) -c -o $@ $<
 
 %.o: %.c
 	gcc $(CFLAGS) -c -o $@ $<
