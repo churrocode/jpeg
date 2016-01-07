@@ -21,7 +21,7 @@ int fruta = 0;
 // calcula la DCT de 8x8 y devuelve la matriz de coeficientes
 // bloque apunta al principio del bloque de 8x8 en memoria, ancho es el tamaño en memoria de una fila de imagen, res es el output
 // TODO: Devolver el bloque de 8x8 en un array, ordenado en zigzag
-void DCt(const char* bloque, const int ancho, double8x8* res) {
+void DCT(const char* bloque, const int ancho, double8x8* res) {
 	int i, j, xOffset, yOffset;
 	for (i = 0; i < 8; ++i) {
 		for (j = 0; j < 8; ++j) {
@@ -50,3 +50,4 @@ void quantizar(const quant_matrix* qMatrix, double8x8* img) {
 	for (i = 0; i < 8; ++i) for (j = 0; j < 8; ++j)
 		(*img)[i][j] /= (*qMatrix)[i][j];
 }
+

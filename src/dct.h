@@ -1,5 +1,5 @@
-#ifndef DCT
-#define DCT
+#ifndef DCT_H
+#define DCT_H
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include "typedefs.h"
@@ -9,10 +9,11 @@
 // TODO: Devolver el bloque de 8x8 en un array, ordenado en zigzag
 
 
-void DCt(const char* bloque, const int ancho, double8x8* res);
+void DCT(const char* bloque, const int ancho, double8x8* res);
 
 void quantizar(const quant_matrix* qMatrix, double8x8* img);
 
 const quant_matrix qMatrix_70;
+
 
 #endif
