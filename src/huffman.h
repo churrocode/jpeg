@@ -2,20 +2,25 @@
 #define JPEG_HUFFMAN
 
 #include "typedefs.h"
+#include "bitBuffer.h"
 
 
 void initialize_tables_bw();
 int huffman_initialized;
+
+void encode_8x8DC(double8x8* coefs, double prevDC, dByte* huffcode, byte* hufflength, bitBuffer* buffer);
 
 // Y_DC_LENGTHS[i-1] = # codigos de long i (BITS en el apunte) (para el DC de Y)
 const byte Y_DC_LENGTHS[16] = {0,1,5,1,1,1,1,1,1,0,0,0,0,0,0,0};
 
 // Y_DC_HUFFVALS -> los valores ordenados segun la longitud del codigo que les toco (para el DC de Y)
 #define Y_DC_HUFFVALS_SIZE 12
-
 const byte Y_DC_HUFFVALS[Y_DC_HUFFVALS_SIZE] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 
+//Y_DC_HUFFCODE[v] es el código que le toca al valor v (para el DC de Y)
 /*const*/ dByte Y_DC_HUFFCODE[Y_DC_HUFFVALS_SIZE];
+
+//Y_DC_HUFFLENGTH[v] es la longitud del código que le toca al valor v (para el DC de Y)
 /*const*/ byte Y_DC_HUFFLENGTH[Y_DC_HUFFVALS_SIZE];
 
 // analogo para AC

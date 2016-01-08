@@ -31,6 +31,9 @@ huffTest: huffman.o testHuffman.c bitBuffer.o bitsUtils.o
 bitBuffer.o: bitBuffer.c bitsUtils.o
 	gcc $(CFLAGS) -c -o $@ $<
 
+huffman.o: huffman.c bitsUtils.o
+	gcc $(CFLAGS) -c -o $@ $< bitsUtils.o
+
 %.o: %.c
 	gcc $(CFLAGS) -c -o $@ $<
 

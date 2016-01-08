@@ -1,5 +1,6 @@
 #include "huffman.h"
-
+#include "bitsUtils.h"
+#include "bitBuffer.h"
 
 int huffman_initialized = 0;
 
@@ -46,6 +47,20 @@ void initialize_tables_bw(){
 }
 
 
+void encode_8x8DC(double8x8* coefs, double prevDC, dByte* huffcode, byte* hufflength, bitBuffer* buffer) {
+	short dif = (short) (*coefs)[0][0] - prevDC;
+	int len_dif;
+	dByte dif_to_write;
+	if (dif < 0) {
+		len_dif = length((dByte) -dif);
+		dif_to_write = ~((dByte) -dif);
+	} else {
+		len_dif = length((dByte) dif);
+		dif_to_write = ((dByte) dif);
+	}
+	bB_write_short(huffcode[len_dif], hufflength[len_dif], buffer);
+	bB_write_short(dif_to_write, len_dif, buffer);
+}
 
 
 

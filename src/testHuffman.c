@@ -1,7 +1,12 @@
 #include <stdio.h>
 #include "typedefs.h"
+#include "bitBuffer.h"
 
 extern void initialize_tables_bw(); extern dByte Y_DC_HUFFCODE[]; extern byte Y_DC_HUFFLENGTH[]; extern int length(unsigned short);
+
+extern void encode_8x8DC(double8x8* coefs, double prevDC, dByte* huffcode, byte* hufflength, bitBuffer* buffer);
+
+
 
 void basicDC_test() {
 	// Y_DC_LENGTHS[16] = {0,1,5,1,1,1,1,1,1,0,0,0,0,0,0,0}
@@ -26,6 +31,43 @@ void basicDC_test() {
 	for (; i < 12; ++i) {
 		printf("%d \t %d \t %d\n", i, Y_DC_HUFFCODE[i], Y_DC_HUFFLENGTH[i]);
 	}
+}
+
+void DCEncode_test() {
+	initialize_tables_bw();
+	double8x8 mDC = {
+		{509, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0}
+	};
+	// tiene que encodear 9, 509. O sea: 1111110 111111101
+	// O sea: 1111.1101 1111.1101 (......)
+	bitBuffer buff = bB_new(5);
+	encode_8x8DC(&mDC, 0, Y_DC_HUFFCODE, Y_DC_HUFFLENGTH, &buff);
+	printBuffer(&buff);
+	bB_free(&buff);
+
+	double8x8 mDCNeg = {
+		{-509, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 0, 0}
+	};
+	// tiene que encodear 9, -509. O sea: 1111110 000000010
+	// O sea: 1111.1100 0000.0010 (......)
+	buff = bB_new(5);
+	encode_8x8DC(&mDCNeg, 0, Y_DC_HUFFCODE, Y_DC_HUFFLENGTH, &buff);
+	printBuffer(&buff);
+	bB_free(&buff);
 }
 
 void length_test() {
@@ -81,8 +123,10 @@ void length_test() {
 	printf("%d, %d\n", length(n), 16);
 }
 
+
 int main(){
 	// basicDC_test();
-	length_test();
+	// length_test();
+	DCEncode_test();
 	return 0;
 }
