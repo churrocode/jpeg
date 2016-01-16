@@ -35,6 +35,7 @@ void basicDC_test() {
 
 void DCEncode_test() {
 	initialize_tables_bw();
+	bitBuffer  buff = bB_new(5);
 	double8x8 mDC = {
 		{509, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0},
@@ -45,9 +46,17 @@ void DCEncode_test() {
 		{0, 0, 0, 0, 0, 0, 0, 0},
 		{0, 0, 0, 0, 0, 0, 0, 0}
 	};
+	// tiene que encodear el 0.
+	// O sea: 0, X. O sea: 00(00.00 ....)
+	encode_8x8DC(&mDC, 509, Y_DC_HUFFCODE, Y_DC_HUFFLENGTH, &buff);
+	// Ponemos unos 1s para que se note, O sea: 00(11.1111 ...)
+	bB_write_short(0xFFFF, 6, &buff);
+	printBuffer(&buff);
+	bB_free(&buff);
+
+	buff = bB_new(5);
 	// tiene que encodear 9, 509. O sea: 1111110 111111101
 	// O sea: 1111.1101 1111.1101 (......)
-	bitBuffer buff = bB_new(5);
 	encode_8x8DC(&mDC, 0, Y_DC_HUFFCODE, Y_DC_HUFFLENGTH, &buff);
 	printBuffer(&buff);
 	bB_free(&buff);
