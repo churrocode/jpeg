@@ -46,18 +46,20 @@ void initialize_tables_bw(){
 	}
 }
 
+void get_length_and_bits(short value, int* len, dByte* bits) {
+	if (value < 0) {
+		*len = length((dByte) -value);
+		*bits = ~((dByte) -value);
+	} else {
+		*len = length((dByte) value);
+		*bits = ((dByte) value);
+	}
+}
 
 void encode_8x8DC(double8x8* coefs, double prevDC, dByte* huffcode, byte* hufflength, bitBuffer* buffer) {
 	short dif = (short) (*coefs)[0][0] - prevDC;
-	int len_dif;
-	dByte dif_to_write;
-	if (dif < 0) {
-		len_dif = length((dByte) -dif);
-		dif_to_write = ~((dByte) -dif);
-	} else {
-		len_dif = length((dByte) dif);
-		dif_to_write = ((dByte) dif);
-	}
+	int len_dif; dByte dif_to_write;
+	get_length_and_bits(dif, &len_dif, &dif_to_write);
 	bB_write_short(huffcode[len_dif], hufflength[len_dif], buffer);
 	bB_write_short(dif_to_write, len_dif, buffer);
 }
